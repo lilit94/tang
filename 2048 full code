@@ -472,7 +472,62 @@ ro=game;
 
 end
 
-
+//ARIABLE 
+	add_sub_0 : add_sub_lkc;
+	add_sub_1 : add_sub_mkc;
+	add_sub_2_result_int[3..0]	:	WIRE;
+	add_sub_2_cout	:	WIRE;
+	add_sub_2_dataa[2..0]	:	WIRE;
+	add_sub_2_datab[2..0]	:	WIRE;
+	add_sub_2_result[2..0]	:	WIRE;
+	add_sub_3_result_int[4..0]	:	WIRE;
+	add_sub_3_cout	:	WIRE;
+	add_sub_3_dataa[3..0]	:	WIRE;
+	add_sub_3_datab[3..0]	:	WIRE;
+	add_sub_3_result[3..0]	:	WIRE;
+	add_sub_4_result_int[5..0]	:	WIRE;
+	add_sub_4_cout	:	WIRE;
+	add_sub_4_dataa[4..0]	:	WIRE;
+	add_sub_4_datab[4..0]	:	WIRE;
+	add_sub_4_result[4..0]	:	WIRE;
+	add_sub_5_result_int[5..0]	:	WIRE;
+	add_sub_5_cout	:	WIRE;
+	add_sub_5_dataa[4..0]	:	WIRE;
+	add_sub_5_datab[4..0]	:	WIRE;
+	add_sub_5_result[4..0]	:	WIRE;
+	add_sub_6_result_int[5..0]	:	WIRE;
+	add_sub_6_cout	:	WIRE;
+	add_sub_6_dataa[4..0]	:	WIRE;
+	add_sub_6_datab[4..0]	:	WIRE;
+	add_sub_6_result[4..0]	:	WIRE;
+	add_sub_7_result_int[5..0]	:	WIRE;
+	add_sub_7_cout	:	WIRE;
+	add_sub_7_dataa[4..0]	:	WIRE;
+	add_sub_7_datab[4..0]	:	WIRE;
+	add_sub_7_result[4..0]	:	WIRE;
+	add_sub_8_result_int[5..0]	:	WIRE;
+	add_sub_8_cout	:	WIRE;
+	add_sub_8_dataa[4..0]	:	WIRE;
+	add_sub_8_datab[4..0]	:	WIRE;
+	add_sub_8_result[4..0]	:	WIRE;
+	add_sub_9_result_int[5..0]	:	WIRE;
+	add_sub_9_cout	:	WIRE;
+	add_sub_9_dataa[4..0]	:	WIRE;
+	add_sub_9_datab[4..0]	:	WIRE;
+	add_sub_9_result[4..0]	:	WIRE;
+	DenominatorIn[54..0]	: WIRE;
+	DenominatorIn_tmp[54..0]	: WIRE;
+	gnd_wire	: WIRE;
+	nose[109..0]	: WIRE;
+	NumeratorIn[109..0]	: WIRE;
+	NumeratorIn_tmp[109..0]	: WIRE;
+	prestg[49..0]	: WIRE;
+	quotient_tmp[9..0]	: WIRE;
+	sel[43..0]	: WIRE;
+	selnose[109..0]	: WIRE;
+	StageIn[54..0]	: WIRE;
+	StageIn_tmp[54..0]	: WIRE;
+	StageOut[49..0]	: WIRE; //
 
 
 
