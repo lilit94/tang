@@ -1,0 +1,708 @@
+module project(matrixout,clk,rst,direction);
+
+input clk; 
+input [1:0]direction;
+input rst;
+output [63:0]matrixout;
+
+reg [63:0] matrix;
+reg [63:0] Nmatrix;
+reg[63:0] matrixout;
+reg c;
+
+always @(posedge clk, negedge rst)
+begin
+if(rst==0) begin matrixout <= 64'b0; matrix <= 64'b0; end 
+else begin matrixout <= matrix; end 
+end
+
+always @(*)
+begin
+check(c,matrix);
+if(c==1'b1) matrix = 63'b 0 ;
+else 
+putRandomNumber(matrix,matrix);
+swapMatrix(matrix,matrix,direction);
+upshiftmatrix(matrix,matrix,direction);
+swapbackMatrix(matrix,matrix);
+end
+
+endmodule
+function check(booleanout,m);
+input [63:0]m;
+output booleanout;
+endfunction
+always@(*)
+begin
+if({m[63],m[62],m[61],m[60]}||{m[59],m[58],m[57],m[56]}||{m[55],m[54],m[53],m[52]}||{m[51],m[50],m[49],m[48]}||
+{m[47],m[46],m[45],m[44]}||{m[43],m[42],m[41],m[40]}||{m[39],m[38],m[37],m[36]}||{m[35],m[34],m[33],m[32]}||
+{m[31],m[30],m[29],m[28]}||{m[27],m[26],m[25],m[24]}||{m[23],m[22],m[21],m[20]}||{m[19],m[18],m[17],m[16]}||
+{m[15],m[14],m[13],m[12]}||{m[11],m[10],m[9],m[8]}||{m[7],m[6],m[5],m[4]}||{m[3],m[2],m[1],m[0]} ==4'b0)
+begin booleanout =1'b0;end
+else begin booleanout = 1'b1;end 
+end
+endmodule
+
+task putRandomNumber(matrixA,matrixB);
+input [63:0]matrixB;
+output [63:0]matrixA;
+
+reg [3:0]randomnumber; reg [3:0]randomplace;
+reg [3:0] n;
+always@(*)
+begin
+n=4'b0;
+if({m[63],m[62],m[61],m[60]}==4'b0) begin n = n+4'b1; end if({m[59],m[58],m[57],m[56]}==4'b0) begin n = n+4'b1; end 
+if({m[55],m[54],m[53],m[52]}==4'b0)begin n = n+4'b1; end if({m[51],m[50],m[49],m[48]}==4'b0) begin n = n+4'b1;end 
+if({m[47],m[46],m[45],m[44]}==4'b0) begin n = n+4'b1; end if({m[43],m[42],m[41],m[40]}==4'b0) begin n = n+4'b1;end 
+if({m[39],m[38],m[37],m[36]}==4'b0) begin n = n+4'b1;end if({m[35],m[34],m[33],m[32]}==4'b0) begin n = n+4'b1;end 
+if({m[31],m[30],m[29],m[28]}==4'b0) begin n = n+4'b1;end if({m[27],m[26],m[25],m[24]}==4'b0) begin n = n+4'b1;end 
+if({m[23],m[22],m[21],m[20]}==4'b0) begin n = n+4'b1;end if({m[19],m[18],m[17],m[16]}==4'b0) begin n = n+4'b1;end 
+if({m[15],m[14],m[13],m[12]}==4'b0) begin n = n+4'b1;end if({m[11],m[10],m[9],m[8]}==4'b0) begin n = n+4'b1;end 
+if({m[7],m[6],m[5],m[4]}==4'b0) begin n = n+4'b1;end if({m[3],m[2],m[1],m[0]}==4'b0) begin n = n+4'b1;end 
+
+randomnumber = 4'b1+{$random} % 1;
+randomplace = {$random} % n;
+
+if({m[63],m[62],m[61],m[60]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace-4'b1; end
+else if(randomplace ==4'b0) begin{m[63],m[62],m[61],m[60]} = randomnumber; end else begin randomplace = randomplace;end 
+if({m[59],m[58],m[57],m[56]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[59],m[58],m[57],m[56]} = randomnumber;end else begin randomplace = randomplace; end 
+if({m[55],m[54],m[53],m[52]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[55],m[54],m[53],m[52]} = randomnumber;end else begin randomplace = randomplace; end 
+if({m[51],m[50],m[49],m[48]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin{m[51],m[50],m[49],m[48]} = randomnumber; end else begin randomplace = randomplace;end 
+if({m[47],m[46],m[45],m[44]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[47],m[46],m[45],m[44]} = randomnumber; end else begin randomplace = randomplace; end 
+if({m[43],m[42],m[41],m[40]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin{m[43],m[42],m[41],m[40]} = randomnumber; end else begin randomplace = randomplace; end 
+if({m[39],m[38],m[37],m[36]}==4'b0 && randomplace >4'b0)begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[39],m[38],m[37],m[36]} = randomnumber; end else begin randomplace = randomplace;end 
+if({m[35],m[34],m[33],m[32]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[35],m[34],m[33],m[32]} = randomnumber; end else begin randomplace = randomplace;end 
+if({m[31],m[30],m[29],m[28]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[31],m[30],m[29],m[28]} = randomnumber; end else begin randomplace = randomplace;end 
+if({m[27],m[26],m[25],m[24]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[27],m[26],m[25],m[24]} = randomnumber; end else begin randomplace = randomplace;end 
+if({m[23],m[22],m[21],m[20]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[23],m[22],m[21],m[20]} = randomnumber; end else begin randomplace = randomplace;end 
+if({m[19],m[18],m[17],m[16]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[19],m[18],m[17],m[16]} = randomnumber; end else begin randomplace = randomplace;end 
+if({m[15],m[14],m[13],m[12]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[15],m[14],m[13],m[12]} = randomnumber; end else begin randomplace = randomplace;end 
+if({m[11],m[10],m[9],m[8]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[11],m[10],m[9],m[8]}= randomnumber; end else begin randomplace = randomplace;end 
+if({m[7],m[6],m[5],m[4]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[7],m[6],m[5],m[4]} = randomnumber; end else begin randomplace = randomplace;end 
+if({m[3],m[2],m[1],m[0]}==4'b0 && randomplace >4'b0) begin randomplace = randomplace -4'b1; end 
+else if(randomplace ==4'b0) begin {m[3],m[2],m[1],m[0]} = randomnumber; end else begin randomplace = randomplace;end 
+end
+endmodule
+
+module swapbackMatrixMatrix(mo,mi,,direction);
+input [1:0] direction;
+output [63:0]mo;
+input[63:0] mi;
+
+reg [63:0] i;
+
+always@(*)
+begin
+i = mi;
+case(direcion)
+2'b00: begin mo=i; end //up
+2'b01: begin{mo[63],mo[62],mo[61],mo[60]}={i[15],i[14],i[13],i[12]};
+{mo[59],mo[58],mo[57],mo[56]}={i[31],i[30],i[29],i[28]}; 
+{mo[55],mo[54],mo[53],mo[52]}={i[47],i[46],i[45],i[44]}; 
+{mo[51],mo[50],mo[49],mo[48]}={i[63],i[62],i[61],i[60]}; 
+{mo[47],mo[46],mo[45],mo[44]}={i[11],i[10],i[9],i[8]}; 
+{mo[43],mo[42],mo[41],mo[40]}={i[27],i[26],i[25],i[24]}; 
+{mo[39],mo[38],mo[37],mo[36]}={i[43],i[42],i[41],i[40]}; 
+{mo[35],mo[34],mo[33],mo[32]}={i[59],i[58],i[57],i[56]}; 
+{mo[31],mo[30],mo[29],mo[28]}={i[7],i[6],i[5],i[4]}; 
+{mo[27],mo[26],mo[25],mo[24]}={i[23],i[22],i[21],i[20]}; 
+{mo[23],mo[22],mo[21],mo[20]}={i[39],i[38],i[37],i[36]}; 
+{mo[19],mo[18],mo[17],mo[16]}={i[55],i[54],i[53],i[52]}; 
+{mo[15],mo[14],mo[13],mo[12]}={i[3],i[2],i[1],i[0]}; 
+{mo[11],mo[10],mo[9],mo[8]}={i[19],i[18],i[17],i[16]}; 
+{mo[7],mo[6],mo[5],mo[4]}={i[35],i[34],i[33],i[32]}; 
+{mo[3],mo[2],mo[1],mo[0]}={i[51],i[50],i[49],i[48]}; end //right
+
+2'b10: begin {mo[63],mo[62],mo[61],mo[60]}={i[15],i[14],i[13],i[12]};
+{mo[59],mo[58],mo[57],mo[56]}={i[11],i[10],i[9],i[8]}; 
+{mo[55],mo[54],mo[53],mo[52]}={i[7],i[6],i[5],i[4]}; 
+{mo[51],mo[50],mo[49],mo[48]}={i[3],i[2],i[1],i[0]}; 
+{mo[47],mo[46],mo[45],mo[44]}={i[31],i[30],i[29],i[28]}; 
+{mo[43],mo[42],mo[41],mo[40]}={i[27],i[26],i[25],i[24]}; 
+{mo[39],mo[38],mo[37],mo[36]}={i[23],i[22],i[21],i[20]}; 
+{mo[35],mo[34],mo[33],mo[32]}={i[19],i[18],i[17],i[16]}; 
+{mo[31],mo[30],mo[29],mo[28]}={i[47],i[46],i[45],i[44]}; 
+{mo[27],mo[26],mo[25],mo[24]}={i[43],i[42],i[41],i[40]}; 
+{mo[23],mo[22],mo[21],mo[20]}={i[39],i[38],i[37],i[36]}; 
+{mo[19],mo[18],mo[17],mo[16]}={i[35],i[34],i[33],i[32]}; 
+{mo[15],mo[14],mo[13],mo[12]}={i[63],i[62],i[61],i[60]}; 
+{mo[11],mo[10],mo[9],mo[8]}={i[59],i[58],i[57],i[56]}; 
+{mo[7],mo[6],mo[5],mo[4]}={i[55],i[54],i[53],i[52]}; 
+{mo[3],mo[2],mo[1],mo[0]}={i[51],i[50],i[49],i[48]}; end //down
+2'b11: begin {mo[63],mo[62],mo[61],mo[60]}={i[51],i[50],i[49],i[48]};
+{mo[59],mo[58],mo[57],mo[56]}={i[35],i[34],i[33],i[32]}; 
+{mo[55],mo[54],mo[53],mo[52]}={i[19],i[18],i[17],i[16]}; 
+{mo[51],mo[50],mo[49],mo[48]}={i[3],i[2],i[1],i[0]}; 
+{mo[47],mo[46],mo[45],mo[44]}={i[55],i[54],i[53],i[52]}; 
+{mo[43],mo[42],mo[41],mo[40]}={i[39],i[38],i[37],i[36]}; 
+{mo[39],mo[38],mo[37],mo[36]}={i[23],i[22],i[21],i[20]}; 
+{mo[35],mo[34],mo[33],mo[32]}={i[7],i[6],i[5],i[4]}; 
+{mo[31],mo[30],mo[29],mo[28]}={i[59],i[58],i[57],i[46]}; 
+{mo[27],mo[26],mo[25],mo[24]}={i[43],i[42],i[41],i[40]}; 
+{mo[23],mo[22],mo[21],mo[20]}={i[27],i[26],i[25],i[24]}; 
+{mo[19],mo[18],mo[17],mo[16]}={i[11],i[10],i[9],i[8]}; 
+{mo[15],mo[14],mo[13],mo[12]}={i[64],i[62],i[61],i[60]}; 
+{mo[11],mo[10],mo[9],mo[8]}={i[47],i[46],i[45],i[44]}; 
+{mo[7],mo[6],mo[5],mo[4]}={i[31],i[30],i[29],i[28]}; 
+{mo[3],mo[2],mo[1],mo[0]}={i[15],i[14],i[13],i[12]}; end //left
+endcase
+end 
+endmodule
+
+module swapMatrix(mo,mi,,direction);
+input [1:0] direction;
+output [63:0]mo;
+input[63:0] mi;
+
+reg [63:0] i;
+
+always@(*)
+begin 
+i = mi;
+case(direcion)
+2'b10: begin mo=i; end 
+2'b11: begin {mo[63],mo[62],mo[61],mo[60]}={i[15],i[14],i[13],i[12]};
+{mo[59],mo[58],mo[57],mo[56]}={i[31],i[30],i[29],i[28]}; 
+{mo[55],mo[54],mo[53],mo[52]}={i[47],i[46],i[45],i[44]}; 
+{mo[51],mo[50],mo[49],mo[48]}={i[63],i[62],i[61],i[60]}; 
+{mo[47],mo[46],mo[45],mo[44]}={i[11],i[10],i[9],i[8]}; 
+{mo[43],mo[42],mo[41],mo[40]}={i[27],i[26],i[25],i[24]}; 
+{mo[39],mo[38],mo[37],mo[36]}={i[43],i[42],i[41],i[40]}; 
+{mo[35],mo[34],mo[33],mo[32]}={i[59],i[58],i[57],i[56]}; 
+{mo[31],mo[30],mo[29],mo[28]}={i[7],i[6],i[5],i[4]}; 
+{mo[27],mo[26],mo[25],mo[24]}={i[23],i[22],i[21],i[20]}; 
+{mo[23],mo[22],mo[21],mo[20]}={i[39],i[38],i[37],i[36]}; 
+{mo[19],mo[18],mo[17],mo[16]}={i[55],i[54],i[53],i[52]}; 
+{mo[15],mo[14],mo[13],mo[12]}={i[3],i[2],i[1],i[0]}; 
+{mo[11],mo[10],mo[9],mo[8]}={i[19],i[18],i[17],i[16]}; 
+{mo[7],mo[6],mo[5],mo[4]}={i[35],i[34],i[33],i[32]}; 
+{mo[3],mo[2],mo[1],mo[0]}={i[51],i[50],i[49],i[48]}; end 
+
+2'b00: begin {mo[63],mo[62],mo[61],mo[60]}={i[15],i[14],i[13],i[12]};
+{mo[59],mo[58],mo[57],mo[56]}={i[11],i[10],i[9],i[8]}; 
+{mo[55],mo[54],mo[53],mo[52]}={i[7],i[6],i[5],i[4]}; 
+{mo[51],mo[50],mo[49],mo[48]}={i[3],i[2],i[1],i[0]}; 
+{mo[47],mo[46],mo[45],mo[44]}={i[31],i[30],i[29],i[28]}; 
+{mo[43],mo[42],mo[41],mo[40]}={i[27],i[26],i[25],i[24]}; 
+{mo[39],mo[38],mo[37],mo[36]}={i[23],i[22],i[21],i[20]}; 
+{mo[35],mo[34],mo[33],mo[32]}={i[19],i[18],i[17],i[16]}; 
+{mo[31],mo[30],mo[29],mo[28]}={i[47],i[46],i[45],i[44]}; 
+{mo[27],mo[26],mo[25],mo[24]}={i[43],i[42],i[41],i[40]}; 
+{mo[23],mo[22],mo[21],mo[20]}={i[39],i[38],i[37],i[36]}; 
+{mo[19],mo[18],mo[17],mo[16]}={i[35],i[34],i[33],i[32]}; 
+{mo[15],mo[14],mo[13],mo[12]}={i[63],i[62],i[61],i[60]}; 
+{mo[11],mo[10],mo[9],mo[8]}={i[59],i[58],i[57],i[56]}; 
+{mo[7],mo[6],mo[5],mo[4]}={i[55],i[54],i[53],i[52]}; 
+{mo[3],mo[2],mo[1],mo[0]}={i[51],i[50],i[49],i[48]}; end 
+
+2'b01: begin {mo[63],mo[62],mo[61],mo[60]}={i[51],i[50],i[49],i[48]};
+{mo[59],mo[58],mo[57],mo[56]}={i[35],i[34],i[33],i[32]}; 
+{mo[55],mo[54],mo[53],mo[52]}={i[19],i[18],i[17],i[16]}; 
+{mo[51],mo[50],mo[49],mo[48]}={i[3],i[2],i[1],i[0]}; 
+{mo[47],mo[46],mo[45],mo[44]}={i[55],i[54],i[53],i[52]}; 
+{mo[43],mo[42],mo[41],mo[40]}={i[39],i[38],i[37],i[36]}; 
+{mo[39],mo[38],mo[37],mo[36]}={i[23],i[22],i[21],i[20]}; 
+{mo[35],mo[34],mo[33],mo[32]}={i[7],i[6],i[5],i[4]}; 
+{mo[31],mo[30],mo[29],mo[28]}={i[59],i[58],i[57],i[46]}; 
+{mo[27],mo[26],mo[25],mo[24]}={i[43],i[42],i[41],i[40]}; 
+{mo[23],mo[22],mo[21],mo[20]}={i[27],i[26],i[25],i[24]}; 
+{mo[19],mo[18],mo[17],mo[16]}={i[11],i[10],i[9],i[8]}; 
+{mo[15],mo[14],mo[13],mo[12]}={i[64],i[62],i[61],i[60]}; 
+{mo[11],mo[10],mo[9],mo[8]}={i[47],i[46],i[45],i[44]}; 
+{mo[7],mo[6],mo[5],mo[4]}={i[31],i[30],i[29],i[28]}; 
+{mo[3],mo[2],mo[1],mo[0]}={i[15],i[14],i[13],i[12]}; end 
+endcase
+end 
+endmodule
+
+module upshiftMatrix(matrixout,matrixin,direction);
+input [63:0]matrixin;
+output [63:0]matrixout;
+input [1:0]direction;
+
+always@(*)
+begin
+if ({mo[15],mo[14],mo[13],mo[12]} !=4'b0) 
+begin
+if({mo[31],mo[30],mo[29],mo[28]} =={mo[15],mo[14],mo[13],mo[12]} && {mo[31],mo[30],mo[29],mo[28]}!=4'b0 )
+begin
+{mo[15],mo[14],mo[13],mo[12]}=4'b0;{mo[31],mo[30],mo[29],mo[28]}= {mo[31],mo[30],mo[29],mo[28]}+4'b1;
+end
+else if({mo[31],mo[30],mo[29],mo[28]} == 4'b0) begin {mo[31],mo[30],mo[29],mo[28]} = {mo[15],mo[14],mo[13],mo[12]} ;{mo[15],mo[14],mo[13],mo[12]}=4'b0; end 
+end
+else
+begin
+if({mo[31],mo[30],mo[29],mo[28]}!=4'b0)
+begin
+if({mo[47],mo[46],mo[45],mo[44]}=={mo[31],mo[30],mo[29],mo[28]}&&{mo[47],mo[46],mo[45],mo[44]}!=0)
+begin
+{mo[31],mo[30],mo[29],mo[28]} =4'b0;{mo[47],mo[46],mo[45],mo[44]}={mo[47],mo[46],mo[45],mo[44]}+4'b1;
+end
+else if ({mo[47],mo[46],mo[45],mo[44]}==4'b0) begin {mo[47],mo[46],mo[45],mo[44]}={mo[31],mo[30],mo[29],mo[28]};{mo[31],mo[30],mo[29],mo[28]}=4'b0; end 
+end
+else
+if({mo[47],mo[46],mo[45],mo[44]} !=4'b0)
+begin
+if({mo[63],mo[62],mo[61],mo[60]}=={mo[47],mo[46],mo[45],mo[44]}&&{mo[63],mo[62],mo[61],mo[60]}!=4'b0)
+begin 
+{mo[63],mo[62],mo[61],mo[60]}={mo[63],mo[62],mo[61],mo[60]}+4'b1;{mo[47],mo[46],mo[45],mo[44]}=4'b0;
+end
+else if ({mo[63],mo[62],mo[61],mo[60]}==4'b0) begin {mo[63],mo[62],mo[61],mo[60]} ={mo[47],mo[46],mo[45],mo[44]} ;{mo[47],mo[46],mo[45],mo[44]}=4'b0; end 
+end
+end
+
+
+
+if ({mo[11],mo[10],mo[9],mo[8]} !=4'b0) 
+begin
+if({mo[27],mo[26],mo[25],mo[24]} =={mo[11],mo[10],mo[9],mo[8]} &&{mo[27],mo[26],mo[25],mo[24]}!=4'b0) 
+begin
+{mo[11],mo[10],mo[9],mo[8]}=4'b0;{mo[27],mo[26],mo[25],mo[24]}= {mo[27],mo[26],mo[25],mo[24]}+4'b1;
+end
+else if ({mo[27],mo[26],mo[25],mo[24]}==4'b0) begin {mo[27],mo[26],mo[25],mo[24]}={mo[11],mo[10],mo[9],mo[8]};{mo[11],mo[10],mo[9],mo[8]}=4'b0; end 
+end
+else
+begin
+if({mo[27],mo[26],mo[25],mo[24]}!=4'b0)
+begin
+if({mo[43],mo[42],mo[41],mo[40]}=={mo[27],mo[26],mo[25],mo[24]}&&{mo[43],mo[42],mo[41],mo[40]}!=4'b0)
+begin
+{mo[27],mo[26],mo[25],mo[24]} =4'b0;{mo[43],mo[42],mo[41],mo[40]}={mo[43],mo[42],mo[41],mo[40]}+4'b1;
+end
+else if ({mo[43],mo[42],mo[41],mo[40]} ==4'b0) begin {mo[43],mo[42],mo[41],mo[40]}={mo[27],mo[26],mo[25],mo[24]};{mo[27],mo[26],mo[25],mo[24]}=4'b0; end 
+end
+else
+if({mo[43],mo[42],mo[41],mo[40]} !=4'b0)
+begin
+if({mo[59],mo[58],mo[57],mo[56]}=={mo[43],mo[42],mo[41],mo[40]}&&{mo[59],mo[58],mo[57],mo[56]}==4'b0)
+begin 
+{mo[59],mo[58],mo[57],mo[56]}={mo[59],mo[58],mo[57],mo[56]}+4'b1;{mo[43],mo[42],mo[41],mo[40]}=4'b0;
+end
+else if ({mo[59],mo[58],mo[57],mo[56]}== 4'b0) begin{mo[59],mo[58],mo[57],mo[56]}={mo[43],mo[42],mo[41],mo[40]} ;{mo[43],mo[42],mo[41],mo[40]} =4'b0;end
+end
+
+end
+
+if ({mo[7],mo[6],mo[5],mo[4]} !=4'b0) 
+begin
+if({mo[23],mo[22],mo[21],mo[20]} =={mo[7],mo[6],mo[5],mo[4]} &&{mo[23],mo[22],mo[21],mo[20]} !=4'b0) 
+begin
+{mo[7],mo[6],mo[5],mo[4]}=4'b0;{mo[23],mo[22],mo[21],mo[20]}= {mo[23],mo[22],mo[21],mo[20]}+4'b1;
+end
+else if ({mo[23],mo[22],mo[21],mo[20]} ==4'b0) {mo[23],mo[22],mo[21],mo[20]} = {mo[7],mo[6],mo[5],mo[4]}; {mo[7],mo[6],mo[5],mo[4]}=4'b0;
+end
+else
+begin
+if({mo[23],mo[22],mo[21],mo[20]}!=4'b0)
+begin
+if({mo[39],mo[38],mo[37],mo[36]}=={mo[23],mo[22],mo[21],mo[20]}&&{mo[39],mo[38],mo[37],mo[36]}!=4'b0)
+begin
+{mo[23],mo[22],mo[21],mo[20]}=4'b0;{mo[39],mo[38],mo[37],mo[36]}={mo[39],mo[38],mo[37],mo[36]}+4'b1;
+end
+else if({mo[39],mo[38],mo[37],mo[36]}==4'b0)begin {mo[39],mo[38],mo[37],mo[36]}={mo[23],mo[22],mo[21],mo[20]};{mo[23],mo[22],mo[21],mo[20]}=4'b0; end 
+end
+else
+if({mo[39],mo[38],mo[37],mo[36]} !=4'b0&&{mo[55],mo[54],mo[53],mo[52]}!=4'b0)
+begin
+if({mo[55],mo[54],mo[53],mo[52]}=={mo[39],mo[38],mo[37],mo[36]})
+begin 
+{mo[55],mo[54],mo[53],mo[52]}={mo[55],mo[54],mo[53],mo[52]};{mo[39],mo[38],mo[37],mo[36]}=4'b0;
+end
+else if({mo[55],mo[54],mo[53],mo[52]}==4'b0) begin {mo[55],mo[54],mo[53],mo[52]}={mo[39],mo[38],mo[37],mo[36]};{mo[39],mo[38],mo[37],mo[36]}=4'b0; end 
+end
+
+end
+
+
+
+if ({mo[3],mo[2],mo[1],mo[0]} !=4'b0) 
+begin
+if({mo[19],mo[18],mo[17],mo[16]} =={mo[3],mo[2],mo[1],mo[0]} &&{mo[19],mo[18],mo[17],mo[16]}!=4'b0) 
+begin
+{mo[3],mo[2],mo[1],mo[0]}=4'b0;{mo[19],mo[18],mo[17],mo[16]}= {mo[19],mo[18],mo[17],mo[16]}+4'b1;
+end
+else if ({mo[19],mo[18],mo[17],mo[16]}==4'b0) begin{mo[19],mo[18],mo[17],mo[16]}= {mo[3],mo[2],mo[1],mo[0]}; {mo[3],mo[2],mo[1],mo[0]}=4'b0; end 
+end
+else
+begin
+if({mo[19],mo[18],mo[17],mo[16]}!=4'b0)
+begin
+if({mo[35],mo[34],mo[33],mo[32]}=={mo[19],mo[18],mo[17],mo[16]}&&{mo[35],mo[34],mo[33],mo[32]}!=4'b0)
+begin
+{mo[19],mo[18],mo[17],mo[16]} =4'b0;{mo[35],mo[34],mo[33],mo[32]}={mo[35],mo[34],mo[33],mo[32]}+4'b1;
+end
+else if ({mo[35],mo[34],mo[33],mo[32]}==4'b0) begin {mo[35],mo[34],mo[33],mo[32]}= {mo[19],mo[18],mo[17],mo[16]} ; {mo[19],mo[18],mo[17],mo[16]} =4'b0; end 
+end
+else
+if({mo[35],mo[34],mo[33],mo[32]} !=4'b0)
+begin
+if({mo[51],mo[50],mo[49],mo[48]}=={mo[35],mo[34],mo[33],mo[32]}&&{mo[51],mo[50],mo[49],mo[48]}!=4'b0)
+begin 
+{mo[51],mo[50],mo[49],mo[48]}={mo[51],mo[50],mo[49],mo[48]}+4'b1;{mo[35],mo[34],mo[33],mo[32]}=4'b0;
+end
+else if ({mo[51],mo[50],mo[49],mo[48]}==4'b0) begin {mo[51],mo[50],mo[49],mo[48]}={mo[35],mo[34],mo[33],mo[32]};{mo[35],mo[34],mo[33],mo[32]}=4'b0; end 
+end
+
+end
+end
+
+endmodule
+module vga(clk,rst_n,hsync,vsync,vga_r,vga_g,vga_b);
+
+
+
+input clk; 
+
+input rst_n; 
+
+output hsync; 
+
+output vsync; 
+
+
+
+output [3:0] vga_r;
+
+output [3:0] vga_g;
+
+output [3:0] vga_b;
+
+
+
+reg[9:0] x_cnt;
+
+reg[9:0] y_cnt;
+
+always @ (posedge clk or negedge rst_n)
+
+if(!rst_n) x_cnt <= 10'd0;
+
+else if(x_cnt == 10'd1000) x_cnt <= 10'd0; 
+
+else x_cnt <= x_cnt+1'b1;
+
+
+
+always @ (posedge clk or negedge rst_n)
+
+if(!rst_n) y_cnt <= 10'd0;
+
+else if(y_cnt == 10'd665) y_cnt <= 10'd0; 
+
+else if(x_cnt == 10'd1000) y_cnt <= y_cnt+1'b1;
+
+
+
+wire valid;
+
+
+
+assign valid = (x_cnt > 10'd80) && (x_cnt < 10'd980)
+
+&& (y_cnt > 10'd35) && (y_cnt < 10'd635);
+
+
+
+wire[9:0] xpos,ypos; 
+
+assign xpos = x_cnt-10'd80;
+
+assign ypos = y_cnt-10'd35;
+
+
+
+//--------------------------------------------------
+
+reg hsync_r,vsync_r;
+
+
+
+always @ (posedge clk or negedge rst_n)
+
+if (!rst_n) begin
+
+hsync_r <= 1'b0;
+
+vsync_r <= 1'b0;
+
+end
+
+else begin
+
+hsync_r <= x_cnt <= 10'd50;
+
+vsync_r <= y_cnt <= 10'd6; 
+
+end
+
+
+
+assign hsync = hsync_r;
+
+assign vsync = vsync_r;
+
+reg [63:0]ro;
+
+always @(posedge clk, negedge rst)
+
+begin
+
+if(rst==0)
+
+ro=64'b0;
+
+else
+
+ro=game;
+
+end
+
+
+
+
+
+
+
+wire s_a = { ro[63], ro[62], ro[61], ro[60]};
+
+wire s_b = { ro[59], ro[58], ro[57], ro[56]};
+
+wire s_c ={ ro[55], ro[54], ro[53], ro[52]};
+
+wire s_d = { ro[51], ro[50], ro[49], ro[48]};
+
+wire s_e = { ro[47], ro[46], ro[45], ro[44]};
+
+wire s_f ={ ro[43], ro[42], ro[41], ro[40]};
+
+wire s_g ={ ro[39], ro[38], ro[37], ro[36]};
+
+wire s_h ={ ro[35], ro[34], ro[33], ro[32]};
+
+wire s_i= { ro[31], ro[30], ro[29], ro[28]};
+
+wire s_j ={ ro[27], ro[26], ro[25], ro[24]};
+
+wire s_k= { ro[23], ro[22], ro[21], ro[20]};
+
+wire s_l ={ ro[19], ro[18], ro[17], ro[16]};
+
+wire s_m ={ ro[15], ro[14], ro[13], ro[12]};
+
+wire s_n ={ ro[11], ro[10], ro[9], ro[8]};
+
+wire s_o ={ ro[7], ro[6], ro[5], ro[4]};
+
+wire s_p ={ ro[3], ro[2], ro[1], ro[0]};
+
+
+
+
+wire w_a =~s_a;
+wire w_b =~s_b;
+wire w_c =~s_c;
+wire w_d =~s_d;
+wire w_e =~s_e;
+wire w_f =~s_f;
+wire w_g =~s_g;
+wire w_h =~s_h;
+wire w_i =~s_i;
+wire w_j =~s_j;
+wire w_k =~s_k;
+wire w_l =~s_l;
+wire w_m =~s_m;
+wire w_n =~s_n;
+wire w_o =~s_o;
+wire w_p =~s_p;
+
+
+
+
+
+wire a_dis,b_dis,c_dis,d_dis,e_dis,f_dis,g_dis,h_dis,i_dis,j_dis,k_dis,l_dis,m_dis,n_dis,o_dis,p_dis;
+
+
+
+assign a_dis = ( (xpos>=100) && (xpos<=200) )
+
+&& ( (ypos>=100) && (ypos<=200) );
+
+
+
+assign b_dis = ( (xpos>=200) && (xpos<=300) )
+
+&& ( (ypos>=100) && (ypos<=200) );
+
+
+
+assign c_dis = ( (xpos>=300) && (xpos<=400) )
+
+&& ( (ypos>100) && (ypos<=200) );
+
+
+
+assign d_dis = ( (xpos>=400) && (xpos<=500) )
+
+&& ( (ypos>=100) && (ypos<=200) );
+
+
+assign e_dis = ( (xpos>=100) && (xpos<=200) )
+
+&& ( (ypos>=200) && (ypos<=300) );
+
+
+
+
+assign f_dis = ( (xpos>=200) && (xpos<=300) )
+
+&& ( (ypos>=200) && (ypos<=300) );
+
+
+
+assign g_dis = ( (xpos>=300) && (xpos<=400) )
+
+&& ( (ypos>200) && (ypos<=300) );
+
+
+
+assign h_dis = ( (xpos>=400) && (xpos<=500) )
+
+&& ( (ypos>=200) && (ypos<=300) );
+
+assign i_dis = ( (xpos>=100) && (xpos<=200) )
+
+&& ( (ypos>=300) && (ypos<=400) );
+
+
+
+
+assign j_dis = ( (xpos>=200) && (xpos<=300) )
+
+&& ( (ypos>=300) && (ypos<=400) );
+
+
+
+assign k_dis = ( (xpos>=300) && (xpos<=400) )
+
+&& ( (ypos>300) && (ypos<=400) );
+
+
+
+assign l_dis = ( (xpos>=400) && (xpos<=500) )
+
+&& ( (ypos>=300) && (ypos<=400) );
+
+assign m_dis = ( (xpos>=100) && (xpos<=200) )
+
+&& ( (ypos>=400) && (ypos<=500) );
+
+
+
+
+assign n_dis = ( (xpos>=200) && (xpos<=300) )
+
+&& ( (ypos>=400) && (ypos<=500) );
+
+
+
+assign o_dis = ( (xpos>=300) && (xpos<=400) )
+
+&& ( (ypos>400) && (ypos<=500) );
+
+
+
+assign p_dis = ( (xpos>=400) && (xpos<=500) )
+
+&& ( (ypos>=400) && (ypos<=500) );
+
+
+
+
+
+
+
+
+assign vga_r = valid ? a_dis : s_a;
+assign vga_b = valid ? a_dis : w_a;
+
+
+assign vga_r = valid ? b_dis : s_b;
+assign vga_b = valid ? b_dis : w_b;
+
+
+assign vga_r = valid ? c_dis : s_c;
+assign vga_b = valid ? c_dis : w_c;
+
+
+assign vga_r = valid ? d_dis : s_d;
+assign vga_b = valid ? d_dis : w_d;
+
+
+assign vga_r = valid ? e_dis : s_e;
+assign vga_b = valid ? e_dis : w_e;
+
+
+assign vga_r = valid ? f_dis : s_f;
+assign vga_b = valid ? f_dis : w_f;
+
+
+assign vga_r = valid ? g_dis : s_g;
+assign vga_b = valid ? g_dis : w_g;
+
+
+assign vga_r = valid ? h_dis : s_h;
+assign vga_b = valid ? h_dis : w_h;
+
+
+assign vga_r = valid ? i_dis : s_i;
+assign vga_b = valid ? i_dis : w_i;
+
+
+assign vga_r = valid ? j_dis : s_j;
+assign vga_b = valid ? j_dis : w_j;
+
+
+assign vga_r = valid ? k_dis : s_k;
+assign vga_b = valid ? k_dis : w_k;
+
+
+assign vga_r = valid ? l_dis : s_l;
+assign vga_b = valid ? l_dis : w_l;
+
+
+assign vga_r = valid ? m_dis : s_m;
+assign vga_b = valid ? m_dis : w_m;
+
+
+assign vga_r = valid ? n_dis : s_n;
+assign vga_b = valid ? n_dis : w_n;
+
+
+assign vga_r = valid ? o_dis : s_o;
+assign vga_b = valid ? o_dis : w_o;
+
+
+assign vga_r = valid ? a_dis : s_a;
+assign vga_b = valid ? a_dis : w_a;
+
+
+assign vga_r = valid ? p_dis : s_p;
+assign vga_b = valid ? p_dis : w_p;
+
+
+endmodule
