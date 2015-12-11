@@ -1,0 +1,185 @@
+module bars(input [9:0] x, input [9:0] y,
+	output [9:0] red, output [9:0] green, output [9:0] blue);
+reg [2:0] idx;
+always @(x)
+begin
+	if (x < 80) idx <= 3'd0;
+	else if (x < 160) idx <= 3'd1;
+	else if (x < 240) idx <= 3'd2;
+	else if (x < 320) idx <= 3'd3;
+	else if (x < 400) idx <= 3'd4;
+	else if (x < 480) idx <= 3'd5;
+	else if (x < 560) idx <= 3'd6;
+	else idx <= 3'd7;
+end
+assign red = (idx[0]? 10'h3ff: 10'h000);
+assign green = (idx[1]? 10'h3ff: 10'h000);
+assign blue = (idx[2]? 10'h3ff: 10'h000);
+
+endmodule
+SUBDESIGN add_sub_lkc
+( 
+	cout	:	output;
+	dataa[0..0]	:	input;
+	datab[0..0]	:	input;
+	result[0..0]	:	output;
+) 
+VARIABLE 
+	carry_eqn[0..0]	: WIRE;
+	cin_wire	: WIRE;
+	datab_node[0..0]	: WIRE;
+	sum_eqn[0..0]	: WIRE;
+
+BEGIN 
+	carry_eqn[] = ( ((dataa[0..0] & datab_node[0..0]) # ((dataa[0..0] # datab_node[0..0]) & cin_wire)));
+	cin_wire = B"1";
+	cout = carry_eqn[0..0];
+	datab_node[] = (! datab[]);
+	result[] = sum_eqn[];
+	sum_eqn[] = ( ((dataa[0..0] $ datab_node[0..0]) $ cin_wire));
+END;SUBDESIGN add_sub_mkc
+( 
+	cout	:	output;
+	dataa[1..0]	:	input;
+	datab[1..0]	:	input;
+	result[1..0]	:	output;
+) 
+VARIABLE 
+	carry_eqn[1..0]	: WIRE;
+	cin_wire	: WIRE;
+	datab_node[1..0]	: WIRE;
+	sum_eqn[1..0]	: WIRE;
+
+BEGIN 
+	carry_eqn[] = ( ((dataa[1..1] & datab_node[1..1]) # ((dataa[1..1] # datab_node[1..1]) & carry_eqn[0..0])), ((dataa[0..0] & datab_node[0..0]) # ((dataa[0..0] # datab_node[0..0]) & cin_wire)));
+	cin_wire = B"1";
+	cout = carry_eqn[1..1];
+	datab_node[] = (! datab[]);
+	result[] = sum_eqn[];
+	sum_eqn[] = ( ((dataa[1..1] $ datab_node[1..1]) $ carry_eqn[0..0]), ((dataa[0..0] $ datab_node[0..0]) $ cin_wire));
+END;
+SUBDESIGN alt_u_div_a2f
+( 
+	denominator[3..0]	:	input;
+	numerator[9..0]	:	input;
+	quotient[9..0]	:	output;
+	remainder[3..0]	:	output;
+) 
+VARIABLE 
+	add_sub_0 : add_sub_lkc;
+	add_sub_1 : add_sub_mkc;
+	add_sub_2_result_int[3..0]	:	WIRE;
+	add_sub_2_cout	:	WIRE;
+	add_sub_2_dataa[2..0]	:	WIRE;
+	add_sub_2_datab[2..0]	:	WIRE;
+	add_sub_2_result[2..0]	:	WIRE;
+	add_sub_3_result_int[4..0]	:	WIRE;
+	add_sub_3_cout	:	WIRE;
+	add_sub_3_dataa[3..0]	:	WIRE;
+	add_sub_3_datab[3..0]	:	WIRE;
+	add_sub_3_result[3..0]	:	WIRE;
+	add_sub_4_result_int[5..0]	:	WIRE;
+	add_sub_4_cout	:	WIRE;
+	add_sub_4_dataa[4..0]	:	WIRE;
+	add_sub_4_datab[4..0]	:	WIRE;
+	add_sub_4_result[4..0]	:	WIRE;
+	add_sub_5_result_int[5..0]	:	WIRE;
+	add_sub_5_cout	:	WIRE;
+	add_sub_5_dataa[4..0]	:	WIRE;
+	add_sub_5_datab[4..0]	:	WIRE;
+	add_sub_5_result[4..0]	:	WIRE;
+	add_sub_6_result_int[5..0]	:	WIRE;
+	add_sub_6_cout	:	WIRE;
+	add_sub_6_dataa[4..0]	:	WIRE;
+	add_sub_6_datab[4..0]	:	WIRE;
+	add_sub_6_result[4..0]	:	WIRE;
+	add_sub_7_result_int[5..0]	:	WIRE;
+	add_sub_7_cout	:	WIRE;
+	add_sub_7_dataa[4..0]	:	WIRE;
+	add_sub_7_datab[4..0]	:	WIRE;
+	add_sub_7_result[4..0]	:	WIRE;
+	add_sub_8_result_int[5..0]	:	WIRE;
+	add_sub_8_cout	:	WIRE;
+	add_sub_8_dataa[4..0]	:	WIRE;
+	add_sub_8_datab[4..0]	:	WIRE;
+	add_sub_8_result[4..0]	:	WIRE;
+	add_sub_9_result_int[5..0]	:	WIRE;
+	add_sub_9_cout	:	WIRE;
+	add_sub_9_dataa[4..0]	:	WIRE;
+	add_sub_9_datab[4..0]	:	WIRE;
+	add_sub_9_result[4..0]	:	WIRE;
+	DenominatorIn[54..0]	: WIRE;
+	DenominatorIn_tmp[54..0]	: WIRE;
+	gnd_wire	: WIRE;
+	nose[109..0]	: WIRE;
+	NumeratorIn[109..0]	: WIRE;
+	NumeratorIn_tmp[109..0]	: WIRE;
+	prestg[49..0]	: WIRE;
+	quotient_tmp[9..0]	: WIRE;
+	sel[43..0]	: WIRE;
+	selnose[109..0]	: WIRE;
+	StageIn[54..0]	: WIRE;
+	StageIn_tmp[54..0]	: WIRE;
+	StageOut[49..0]	: WIRE;
+
+BEGIN 
+	add_sub_0.dataa[0..0] = NumeratorIn[9..9];
+	add_sub_0.datab[0..0] = DenominatorIn[0..0];
+	add_sub_1.dataa[] = ( StageIn[5..5], NumeratorIn[18..18]);
+	add_sub_1.datab[1..0] = DenominatorIn[6..5];
+	add_sub_2_result_int[] = (0, add_sub_2_dataa[]) - (0, add_sub_2_datab[]);
+	add_sub_2_result[] = add_sub_2_result_int[2..0];
+	add_sub_2_cout = !add_sub_2_result_int[3];
+	add_sub_2_dataa[] = ( StageIn[11..10], NumeratorIn[27..27]);
+	add_sub_2_datab[] = DenominatorIn[12..10];
+	add_sub_3_result_int[] = (0, add_sub_3_dataa[]) - (0, add_sub_3_datab[]);
+	add_sub_3_result[] = add_sub_3_result_int[3..0];
+	add_sub_3_cout = !add_sub_3_result_int[4];
+	add_sub_3_dataa[] = ( StageIn[17..15], NumeratorIn[36..36]);
+	add_sub_3_datab[] = DenominatorIn[18..15];
+	add_sub_4_result_int[] = (0, add_sub_4_dataa[]) - (0, add_sub_4_datab[]);
+	add_sub_4_result[] = add_sub_4_result_int[4..0];
+	add_sub_4_cout = !add_sub_4_result_int[5];
+	add_sub_4_dataa[] = ( StageIn[23..20], NumeratorIn[45..45]);
+	add_sub_4_datab[] = DenominatorIn[24..20];
+	add_sub_5_result_int[] = (0, add_sub_5_dataa[]) - (0, add_sub_5_datab[]);
+	add_sub_5_result[] = add_sub_5_result_int[4..0];
+	add_sub_5_cout = !add_sub_5_result_int[5];
+	add_sub_5_dataa[] = ( StageIn[28..25], NumeratorIn[54..54]);
+	add_sub_5_datab[] = DenominatorIn[29..25];
+	add_sub_6_result_int[] = (0, add_sub_6_dataa[]) - (0, add_sub_6_datab[]);
+	add_sub_6_result[] = add_sub_6_result_int[4..0];
+	add_sub_6_cout = !add_sub_6_result_int[5];
+	add_sub_6_dataa[] = ( StageIn[33..30], NumeratorIn[63..63]);
+	add_sub_6_datab[] = DenominatorIn[34..30];
+	add_sub_7_result_int[] = (0, add_sub_7_dataa[]) - (0, add_sub_7_datab[]);
+	add_sub_7_result[] = add_sub_7_result_int[4..0];
+	add_sub_7_cout = !add_sub_7_result_int[5];
+	add_sub_7_dataa[] = ( StageIn[38..35], NumeratorIn[72..72]);
+	add_sub_7_datab[] = DenominatorIn[39..35];
+	add_sub_8_result_int[] = (0, add_sub_8_dataa[]) - (0, add_sub_8_datab[]);
+	add_sub_8_result[] = add_sub_8_result_int[4..0];
+	add_sub_8_cout = !add_sub_8_result_int[5];
+	add_sub_8_dataa[] = ( StageIn[43..40], NumeratorIn[81..81]);
+	add_sub_8_datab[] = DenominatorIn[44..40];
+	add_sub_9_result_int[] = (0, add_sub_9_dataa[]) - (0, add_sub_9_datab[]);
+	add_sub_9_result[] = add_sub_9_result_int[4..0];
+	add_sub_9_cout = !add_sub_9_result_int[5];
+	add_sub_9_dataa[] = ( StageIn[48..45], NumeratorIn[90..90]);
+	add_sub_9_datab[] = DenominatorIn[49..45];
+	DenominatorIn[] = DenominatorIn_tmp[];
+	DenominatorIn_tmp[] = ( DenominatorIn[49..0], ( gnd_wire, denominator[]));
+	gnd_wire = B"0";
+	nose[] = ( B"0000000000", add_sub_9_cout, B"0000000000", add_sub_8_cout, B"0000000000", add_sub_7_cout, B"0000000000", add_sub_6_cout, B"0000000000", add_sub_5_cout, B"0000000000", add_sub_4_cout, B"0000000000", add_sub_3_cout, B"0000000000", add_sub_2_cout, B"0000000000", add_sub_1.cout, B"0000000000", add_sub_0.cout);
+	NumeratorIn[] = NumeratorIn_tmp[];
+	NumeratorIn_tmp[] = ( NumeratorIn[99..0], numerator[]);
+	prestg[] = ( add_sub_9_result[], add_sub_8_result[], add_sub_7_result[], add_sub_6_result[], add_sub_5_result[], add_sub_4_result[], GND, add_sub_3_result[], B"00", add_sub_2_result[], B"000", add_sub_1.result[], B"0000", add_sub_0.result[]);
+	quotient[] = quotient_tmp[];
+	quotient_tmp[] = ( (! selnose[0..0]), (! selnose[11..11]), (! selnose[22..22]), (! selnose[33..33]), (! selnose[44..44]), (! selnose[55..55]), (! selnose[66..66]), (! selnose[77..77]), (! selnose[88..88]), (! selnose[99..99]));
+	remainder[3..0] = StageIn[53..50];
+	sel[] = ( gnd_wire, (sel[43..43] # DenominatorIn[53..53]), (sel[42..42] # DenominatorIn[52..52]), (sel[41..41] # DenominatorIn[51..51]), gnd_wire, (sel[39..39] # DenominatorIn[48..48]), (sel[38..38] # DenominatorIn[47..47]), (sel[37..37] # DenominatorIn[46..46]), gnd_wire, (sel[35..35] # DenominatorIn[43..43]), (sel[34..34] # DenominatorIn[42..42]), (sel[33..33] # DenominatorIn[41..41]), gnd_wire, (sel[31..31] # DenominatorIn[38..38]), (sel[30..30] # DenominatorIn[37..37]), (sel[29..29] # DenominatorIn[36....(line truncated)...
+	selnose[] = ( (! nose[109..109]), (! nose[108..108]), (! nose[107..107]), (! nose[106..106]), (! nose[105..105]), (! nose[104..104]), ((! nose[103..103]) # sel[43..43]), ((! nose[102..102]) # sel[42..42]), ((! nose[101..101]) # sel[41..41]), ((! nose[100..100]) # sel[40..40]), (! nose[99..99]), (! nose[98..98]), (! nose[97..97]), (! nose[96..96]), (! nose[95..95]), (! nose[94..94]), ((! nose[93..93]) # sel[39..39]), ((! nose[92..92]) # sel[38..38]), ((! nose[91..91]) # sel[37..37]), ((! nose[90..90]) # sel...(line truncated)...
+	StageIn[] = StageIn_tmp[];
+	StageIn_tmp[] = ( StageOut[49..0], B"00000");
+	StageOut[] = ( ((( StageIn[48..45], NumeratorIn[90..90]) & selnose[99..99]) # (prestg[49..45] & (! selnose[99..99]))), ((( StageIn[43..40], NumeratorIn[81..81]) & selnose[88..88]) # (prestg[44..40] & (! selnose[88..88]))), ((( StageIn[38..35], NumeratorIn[72..72]) & selnose[77..77]) # (prestg[39..35] & (! selnose[77..77]))), ((( StageIn[33..30], NumeratorIn[63..63]) & selnose[66..66]) # (prestg[34..30] & (! selnose[66..66]))), ((( StageIn[28..25], NumeratorIn[54..54]) & selnose[55..55]) # (prestg[29..25] &...(line truncated)...
+END;
