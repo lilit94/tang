@@ -1,17 +1,39 @@
                               Project report
    Introduction to the game:
-   In this project, we design a game called 2048. This game has a 4*4 matrix. By the button pressed to change the matrix, player needs to get a number 2048 to win the game. If the matrix is full and cannot move, player will lose the game.
+   In this project, we design a game called 2048. This game has a 4*4 matrix. By the button pressed to change the matrix, player needs
+   to get a number 2048 to win the game. If the matrix is full and cannot move, player will lose the game.
    Information of the game:
-  Each block of the matrix can hold a number. Initially, the matrix holds 16 pieces of zero. When the game starts, the matrix will generate a number of 2 or 4 in a random place that hold number zero after each step performed by the player. Then the player can press the buttons to move the matrix. If in the direction of move contains two same adjusted numbers, the matrix will combine them into one number and make the number be the sum of the previous numbers. The number will locate on the old location of the number which is closer to the moving direction of the matrix than the other one. Then the matrix will generate a number of 2 or 4 in a random place that hold number zero to continue the game. During the game, the matrix will always check the condition of winning or losing. 
+  Each block of the matrix can hold a number. Initially, the matrix holds 16 pieces of zero. When the game starts, the matrix will 
+  generate a number of 2 or 4 in a random place that hold number zero after each step performed by the player. Then the player can press the buttons to 
+  move the matrix. If in the direction of move contains two same adjusted numbers, the matrix will combine them into one number and
+  make the number be the sum of the previous numbers. The number will locate on the old location of the number which is closer to 
+  the moving direction of the matrix than the other one. Then the matrix will generate a number of 2 or 4 in a random place that hold 
+  number zero to continue the game. During the game, the matrix will always check the condition of winning or losing. 
    How to use Verilog to perform the game:
-   Due to the limitation of the Verilog, we use 64 bits variables to show the matrix. Each 4 bits represent a number in the matrix. In the game, we have the buttons to perform the functions: reset button that can reset the game and the direction buttons that can control the movement of the numbers in the matrix.  We have several functions to conduct the game. First, we have a “putRandomNumber” function. It can receive a matrix and add a random number required to a random places of the matrix. Second, we have the function called “upshiftedMatrix”. This function will receive a matrix and the direction buttons by the players. It will move all numbers to the upside and combine the two adjusted numbers that are same and generate the new number at the top place of the two numbers. The new number has the value of the sum of the two numbers.  Third, instead of writing the other direction movement function, we use the functions called” swapMatrix” and “swapbackMatrix”. By using these two functions, we transform the matrix in the other by spinning the matrix so that the movement is still moving upward. Then we use the “upShiftedMatrix”. After that we will swap back the matrix to the original direction. 
+   Due to the limitation of the Verilog, we use 64 bits variables to show the matrix. Each 4 bits represent a number in the matrix. In
+   the game, we have the buttons to perform the functions: reset button that can reset the game and the direction buttons that can
+   control the movement of the numbers in the matrix.  We have several functions to conduct the game. First, we have a “putRandomNumber” function.
+   It can receive a matrix and add a random number required to a random places of the matrix. Second, we have the function called 
+   “upshiftedMatrix”. This function will receive a matrix and the direction buttons by the players. It will move all numbers to the
+   upside and combine the two adjusted numbers that are same and generate the new number at the top place of the two numbers. The new
+   number has the value of the sum of the two numbers.  Third, instead of writing the other direction movement function, we use the
+   functions called” swapMatrix” and “swapbackMatrix”. By using these two functions, we transform the matrix in the other by spinning
+   the matrix so that the movement is still moving upward. Then we use the “upShiftedMatrix”. After that we will swap back the
+   matrix to the original direction. 
+   
 
 
 Conclusion:
-The game has the goal: It uses 64 bites to perform the matrix function. By using different methods, it can have the fundamental tools to calculate the matrix.  In this report, we have the method of transacting the matrix and the movement inside of the matrix. 
+The game has the goal: It uses 64 bites to perform the matrix function. By using different methods, it can have the fundamental
+tools to calculate the matrix.  In this report, we have the method of transacting the matrix and the movement inside of the matrix. 
+
 
 However, we did not complete project since we had some troubles about it.
-When we try to use the other modules to act as a method function to simplify the code, we failed to be warned: in the “always@(posedge clk, negedge rst)” block, we should not use the implementation like function, task and void.  In the VGA part, we find that it is so hard to present the numbers in the screen. But we do not have much time to use the color to perform the numbers. Other than that, we also have some ideas to use DE board to show the numbers: by using the LED light and 7-segement-digits, we might to have abilities to perform a 64-bites-long variable .
+When we try to use the other modules to act as a method function to simplify the code, we failed to be warned: in the 
+“always@(posedge clk, negedge rst)” block, we should not use the implementation like function, task and void.  In the VGA part, 
+we find that it is so hard to present the numbers in the screen. But we do not have much time to use the color to perform the numbers.
+Other than that, we also have some ideas to use DE board to show the numbers: by using the LED light and 7-segement-digits, we might 
+to have abilities to perform a 64-bites-long variable .
 
 
 
