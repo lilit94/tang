@@ -4,15 +4,17 @@
    to get a number 2048 to win the game. If the matrix is full and cannot move, player will lose the game.
    Information of the game:
   Each block of the matrix can hold a number. Initially, the matrix holds 16 pieces of zero. When the game starts, the matrix will 
-  generate a number of 2 or 4 in a random place that hold number zero after each step performed by the player. Then the player can press the buttons to 
-  move the matrix. If in the direction of move contains two same adjusted numbers, the matrix will combine them into one number and
-  make the number be the sum of the previous numbers. The number will locate on the old location of the number which is closer to 
-  the moving direction of the matrix than the other one. Then the matrix will generate a number of 2 or 4 in a random place that hold 
-  number zero to continue the game. During the game, the matrix will always check the condition of winning or losing. 
+  generate a number of 2 or 4 in a random place that hold number zero after each step performed by the player. Then the player can 
+  press the buttons to move the matrix. If in the direction of move contains two same adjusted numbers, the matrix will combine 
+  them into one number and make the number be the sum of the previous numbers. The number will locate on the old location of the
+  number which is closer to the moving direction of the matrix than the other one. Then the matrix will generate a number of 2 or
+  4 in a random place that hold number zero to continue the game. During the game, the matrix will always check the condition of 
+  winning or losing. 
    How to use Verilog to perform the game:
    Due to the limitation of the Verilog, we use 64 bits variables to show the matrix. Each 4 bits represent a number in the matrix. In
    the game, we have the buttons to perform the functions: reset button that can reset the game and the direction buttons that can
-   control the movement of the numbers in the matrix.  We have several functions to conduct the game. First, we have a “putRandomNumber” function.
+   control the movement of the numbers in the matrix.  We have several functions to conduct the game. First, we have a “putRandomNumber”
+   function.
    It can receive a matrix and add a random number required to a random places of the matrix. Second, we have the function called 
    “upshiftedMatrix”. This function will receive a matrix and the direction buttons by the players. It will move all numbers to the
    upside and combine the two adjusted numbers that are same and generate the new number at the top place of the two numbers. The new
